@@ -12,7 +12,7 @@ const GetShopItems = "GET_ITEMS"
 const GetShopItemsPath = "/shop/items/"
 
 const BuyItem = "BUY_ITEM"
-const BuyItemPath = "/shop/items/buy/{itemId}"
+const BuyItemPath = "/shop/items/buy/{itemName}"
 
 var routes = utils.Routes{
 
