@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/NOVAPokemon/utils"
-	"github.com/NOVAPokemon/utils/cookies"
+	"github.com/NOVAPokemon/utils/api"
+	"github.com/NOVAPokemon/utils/tokens"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
@@ -26,7 +27,7 @@ func HandleGetItems(w http.ResponseWriter, r *http.Request) {
 
 func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
 
-	itemName := mux.Vars(r)["itemName"]
+	itemName := mux.Vars(r)[api.ShopItemNameVar]
 
 	toBuy, ok := itemsMap[itemName]
 
@@ -35,12 +36,12 @@ func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := cookies.ExtractAndVerifyAuthToken(&w, r, "store")
+	_, err := tokens.ExtractAndVerifyAuthToken(r.Header)
 	if err != nil {
 		return
 	}
 
-	trainerStatsToken, err := cookies.ExtractTrainerStatsToken(r)
+	trainerStatsToken, err := tokens.ExtractAndVerifyTrainerStatsToken(r.Header)
 
 	if err != nil {
 		http.Error(w, ErrTrainerStatsTokenNotFound.Error(), http.StatusUnauthorized)
