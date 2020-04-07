@@ -22,8 +22,8 @@ var routes = utils.Routes{
 
 	utils.Route{
 		Name:        BuyItem,
-		Method:      GET,
-		Pattern:     api.BuyItemPath,
+		Method:      POST,
+		Pattern:     api.BuyItemsRoute,
 		HandlerFunc: HandleBuyItem,
 	},
 }
