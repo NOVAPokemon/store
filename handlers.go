@@ -107,7 +107,7 @@ func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set(tokens.ItemsTokenHeaderName, trainersClient.ItemsToken)
 }
 
-func loadShopItems() ([]StoreItem, map[string]StoreItem) {
+func loadShopItems() ([]items.StoreItem, map[string]items.StoreItem) {
 	data, err := ioutil.ReadFile(ItemsFile)
 	if err != nil {
 		log.Errorf("Error loading items file ")
@@ -115,10 +115,10 @@ func loadShopItems() ([]StoreItem, map[string]StoreItem) {
 		panic(err)
 	}
 
-	var itemsArr []StoreItem
+	var itemsArr []items.StoreItem
 	err = json.Unmarshal(data, &itemsArr)
 
-	var itemsMap = make(map[string]StoreItem, len(itemsArr))
+	var itemsMap = make(map[string]items.StoreItem, len(itemsArr))
 	for _, item := range itemsArr {
 		itemsMap[item.Name] = item
 	}
