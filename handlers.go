@@ -21,7 +21,7 @@ var trainersClient = clients.NewTrainersClient(fmt.Sprintf("%s:%d", utils.Host, 
 var itemsArr, itemsMap = loadShopItems()
 var marshaledItems, _ = json.Marshal(itemsArr)
 
-var ErrItemNotFound = errors.New("item Not Found")
+var ErrItemNotFound = errors.New("item not Found")
 var ErrNotEnoughMoney = errors.New("not enough money")
 var ErrTrainerStatsTokenNotFound = errors.New("trainer stats token not found")
 var ErrTrainerAuthTokenNotFound = errors.New("auth token not found")
