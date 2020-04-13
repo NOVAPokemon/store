@@ -16,8 +16,7 @@ import (
 
 const ItemsFile = "store_items.json"
 
-var trainersClient = clients.NewTrainersClient(fmt.Sprintf("%s:%d", utils.Host, utils.TrainersPort))
-
+var httpClient = &http.Client{}
 var itemsArr, itemsMap = loadShopItems()
 var marshaledItems, _ = json.Marshal(itemsArr)
 
@@ -65,46 +64,41 @@ func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	toAdd := []*utils.Item{{
+	toAdd := []utils.Item{{
 		Name: toBuy.Name,
 	}}
-	added, err := trainersClient.AddItemsToBag(authToken.Username, toAdd, authTokenString)
+
+	var trainersClient = clients.NewTrainersClient(fmt.Sprintf("%s:%d", utils.Host, utils.TrainersPort), httpClient)
+
+	_, err = trainersClient.AddItemsToBag(authToken.Username, toAdd, authTokenString)
 	if err != nil {
 		log.Error(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
-	}
-
-	if err := clients.CheckItemsAdded(toAdd, added); err != nil {
-		log.Error(err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	} else {
-		log.Info("items were successfully added")
 	}
 
 	newTrainerStats := trainerStatsToken.TrainerStats
 	newTrainerStats.Coins -= toBuy.Price
 	trainerStats, err := trainersClient.UpdateTrainerStats(authToken.Username, newTrainerStats, authTokenString)
 	if err != nil {
-		log.Error(err)
+		log.Error("An error occurred updating trainer stats")
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
+	} else {
+		log.Info("Items updated")
 	}
 
 	if err := clients.CheckUpdatedStats(&newTrainerStats, trainerStats); err != nil {
 		log.Error(err)
+		log.Error("An error occurred checking update of trainer stats")
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	} else {
 		log.Info("stats were successfully updated")
 	}
 
-	err = trainersClient.GetItemsToken(authToken.Username, authTokenString)
-	if err != nil {
-		log.Error(err)
-		return
-	}
-
 	w.Header().Set(tokens.ItemsTokenHeaderName, trainersClient.ItemsToken)
+	w.Header().Set(tokens.StatsTokenHeaderName, trainersClient.TrainerStatsToken)
 }
 
 func loadShopItems() ([]utils.StoreItem, map[string]utils.StoreItem) {
