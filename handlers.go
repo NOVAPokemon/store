@@ -66,12 +66,7 @@ func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
 	}
 
 	item := toBuy.ToItem()
-	toAdd := []*items.Item{&item}
-	added, err := trainersClient.AddItemsToBag(authToken.Username, toAdd, authTokenString)
-	if err != nil {
-		log.Error(err)
-		return
-	}
+	toAdd := []items.Item{item}
 
 	var trainersClient = clients.NewTrainersClient(fmt.Sprintf("%s:%d", utils.Host, utils.TrainersPort), httpClient)
 
