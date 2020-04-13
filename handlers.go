@@ -7,6 +7,7 @@ import (
 	"github.com/NOVAPokemon/utils"
 	"github.com/NOVAPokemon/utils/api"
 	"github.com/NOVAPokemon/utils/clients"
+	"github.com/NOVAPokemon/utils/items"
 	"github.com/NOVAPokemon/utils/tokens"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
@@ -65,9 +66,8 @@ func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	toAdd := []*utils.Item{{
-		Name: toBuy.Name,
-	}}
+	item := toBuy.ToItem()
+	toAdd := []*items.Item{&item}
 	added, err := trainersClient.AddItemsToBag(authToken.Username, toAdd, authTokenString)
 	if err != nil {
 		log.Error(err)
@@ -107,8 +107,7 @@ func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set(tokens.ItemsTokenHeaderName, trainersClient.ItemsToken)
 }
 
-func loadShopItems() ([]utils.StoreItem, map[string]utils.StoreItem) {
-
+func loadShopItems() ([]StoreItem, map[string]StoreItem) {
 	data, err := ioutil.ReadFile(ItemsFile)
 	if err != nil {
 		log.Errorf("Error loading items file ")
@@ -116,10 +115,10 @@ func loadShopItems() ([]utils.StoreItem, map[string]utils.StoreItem) {
 		panic(err)
 	}
 
-	var itemsArr []utils.StoreItem
+	var itemsArr []StoreItem
 	err = json.Unmarshal(data, &itemsArr)
 
-	var itemsMap = make(map[string]utils.StoreItem, len(itemsArr))
+	var itemsMap = make(map[string]StoreItem, len(itemsArr))
 	for _, item := range itemsArr {
 		itemsMap[item.Name] = item
 	}
