@@ -11,7 +11,6 @@ import (
 
 const host = utils.Host
 const port = utils.StorePort
-const ServiceName = "store"
 
 var addr = fmt.Sprintf("%s:%d", host, port)
 
