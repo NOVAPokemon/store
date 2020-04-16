@@ -85,7 +85,7 @@ func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	} else {
-		log.Info("Items updated")
+		log.Info("ItemId updated")
 	}
 
 	if err := clients.CheckUpdatedStats(&newTrainerStats, trainerStats); err != nil {
