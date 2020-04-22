@@ -3,8 +3,6 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
-	"github.com/NOVAPokemon/utils"
 	"github.com/NOVAPokemon/utils/api"
 	"github.com/NOVAPokemon/utils/clients"
 	"github.com/NOVAPokemon/utils/items"
@@ -68,7 +66,7 @@ func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
 	item := toBuy.ToItem()
 	toAdd := []items.Item{item}
 
-	var trainersClient = clients.NewTrainersClient(fmt.Sprintf("%s:%d", utils.Host, utils.TrainersPort), httpClient)
+	var trainersClient = clients.NewTrainersClient(httpClient)
 
 	_, err = trainersClient.AddItemsToBag(authToken.Username, toAdd, authTokenString)
 	if err != nil {
