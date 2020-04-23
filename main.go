@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-const host = utils.Host
+const host = utils.ServeHost
 const port = utils.StorePort
 
 var addr = fmt.Sprintf("%s:%d", host, port)

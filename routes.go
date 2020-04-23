@@ -12,7 +12,7 @@ const GetShopItems = "GET_ITEMS"
 const BuyItem = "BUY_ITEM"
 
 var routes = utils.Routes{
-
+	api.DefaultRoute,
 	utils.Route{
 		Name:        GetShopItems,
 		Method:      GET,
