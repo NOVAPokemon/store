@@ -7,4 +7,7 @@ WORKDIR /service
 COPY $executable .
 COPY store_items.json .
 
-ENTRYPOINT ./$executable
+COPY dockerize .
+RUN chmod +x dockerize
+
+CMD ["$executable"]
