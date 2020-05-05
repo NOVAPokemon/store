@@ -78,7 +78,7 @@ func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
 
 	var trainersClient = clients.NewTrainersClient(httpClient)
 
-	_, err = trainersClient.AddItemsToBag(authToken.Username, toAdd, authTokenString)
+	_, err = trainersClient.AddItems(authToken.Username, toAdd, authTokenString)
 	if err != nil {
 		utils.LogAndSendHTTPError(&w, err, http.StatusInternalServerError)
 		return
