@@ -1,4 +1,4 @@
-FROM nova-server-base:latest
+FROM nmmorais/nova-server-base:latest
 
 ENV executable="executable"
 COPY $executable .
