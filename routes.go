@@ -8,20 +8,20 @@ import (
 const GET = "GET"
 const POST = "POST"
 
-const GetShopItems = "GET_ITEMS"
-const BuyItem = "BUY_ITEM"
+const GetItemsName = "GET_ITEMS"
+const BuyItemName = "BUY_ITEM"
 
 var routes = utils.Routes{
 	api.DefaultRoute,
 	utils.Route{
-		Name:        GetShopItems,
+		Name:        GetItemsName,
 		Method:      GET,
 		Pattern:     api.GetShopItemsPath,
 		HandlerFunc: HandleGetItems,
 	},
 
 	utils.Route{
-		Name:        BuyItem,
+		Name:        BuyItemName,
 		Method:      POST,
 		Pattern:     api.BuyItemsRoute,
 		HandlerFunc: HandleBuyItem,
