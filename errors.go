@@ -13,7 +13,7 @@ const (
 )
 
 var (
-	errorNotEnoughMoney = errors.New("not enough money")
+	warnNotEnoughMoney = errors.New("not enough money")
 )
 
 // Handler wrappers

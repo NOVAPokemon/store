@@ -68,8 +68,8 @@ func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
 
 	authTokenString := r.Header.Get(tokens.AuthTokenHeaderName)
 	if trainerStatsToken.TrainerStats.Coins < toBuy.Price {
-		err = wrapBuyItemError(errorNotEnoughMoney)
-		utils.LogAndSendHTTPError(&w, err, http.StatusForbidden)
+		err = wrapBuyItemError(warnNotEnoughMoney)
+		utils.LogAndSendHTTPError(&w, err, http.StatusOK)
 		return
 	}
 
