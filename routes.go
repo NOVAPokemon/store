@@ -15,7 +15,7 @@ const GetItemsName = "GET_ITEMS"
 const BuyItemName = "BUY_ITEM"
 
 var routes = utils.Routes{
-	api.GenStatusRoute(strings.ToLower(fmt.Sprintf("/%s", serviceName))),
+	api.GenStatusRoute(strings.ToLower(fmt.Sprintf("%s", serviceName))),
 	utils.Route{
 		Name:        GetItemsName,
 		Method:      GET,
