@@ -14,7 +14,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const ItemsFile = "store_items.json"
+const itemsFile = "store_items.json"
 
 var (
 	itemsMap       map[string]items.StoreItem
@@ -32,7 +32,7 @@ func init() {
 
 }
 
-func HandleGetItems(w http.ResponseWriter, r *http.Request) {
+func handleGetItems(w http.ResponseWriter, r *http.Request) {
 	_, err := tokens.ExtractAndVerifyAuthToken(r.Header)
 	if err != nil {
 		utils.LogAndSendHTTPError(&w, wrapGetItemsError(err), http.StatusBadRequest)
@@ -45,7 +45,7 @@ func HandleGetItems(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
+func handleBuyItem(w http.ResponseWriter, r *http.Request) {
 	itemName := mux.Vars(r)[api.ShopItemNameVar]
 
 	toBuy, ok := itemsMap[itemName]
@@ -100,7 +100,7 @@ func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
 }
 
 func loadShopItems() (map[string]items.StoreItem, []byte, error) {
-	data, err := ioutil.ReadFile(ItemsFile)
+	data, err := ioutil.ReadFile(itemsFile)
 	if err != nil {
 		return nil, nil, wrapLoadShopItemsError(err)
 	}
@@ -111,9 +111,9 @@ func loadShopItems() (map[string]items.StoreItem, []byte, error) {
 		return nil, nil, wrapLoadShopItemsError(err)
 	}
 
-	var itemsMap = make(map[string]items.StoreItem, len(itemsArr))
+	var itemsMapAux = make(map[string]items.StoreItem, len(itemsArr))
 	for _, item := range itemsArr {
-		itemsMap[item.Name] = item
+		itemsMapAux[item.Name] = item
 	}
 
 	log.Infof("Loaded %d items.", len(itemsArr))
@@ -123,5 +123,5 @@ func loadShopItems() (map[string]items.StoreItem, []byte, error) {
 		return nil, nil, wrapLoadShopItemsError(err)
 	}
 
-	return itemsMap, marshalledItems, nil
+	return itemsMapAux, marshalledItems, nil
 }

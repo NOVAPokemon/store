@@ -8,25 +8,29 @@ import (
 	"github.com/NOVAPokemon/utils/api"
 )
 
-const GET = "GET"
-const POST = "POST"
+const (
+	getItemsName = "GET_ITEMS"
+	buyItemName  = "BUY_ITEM"
+)
 
-const GetItemsName = "GET_ITEMS"
-const BuyItemName = "BUY_ITEM"
+const (
+	get  = "GET"
+	post = "POST"
+)
 
 var routes = utils.Routes{
 	api.GenStatusRoute(strings.ToLower(fmt.Sprintf("%s", serviceName))),
 	utils.Route{
-		Name:        GetItemsName,
-		Method:      GET,
+		Name:        getItemsName,
+		Method:      get,
 		Pattern:     api.GetShopItemsPath,
-		HandlerFunc: HandleGetItems,
+		HandlerFunc: handleGetItems,
 	},
 
 	utils.Route{
-		Name:        BuyItemName,
-		Method:      POST,
+		Name:        buyItemName,
+		Method:      post,
 		Pattern:     api.BuyItemsRoute,
-		HandlerFunc: HandleBuyItem,
+		HandlerFunc: handleBuyItem,
 	},
 }

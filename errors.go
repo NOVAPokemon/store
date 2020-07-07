@@ -9,7 +9,6 @@ import (
 
 const (
 	errorLoadShopItem = "error loading shop items"
-
 	errorItemNotFoundFormat = "item %s not Found"
 )
 
@@ -19,11 +18,11 @@ var (
 
 // Handler wrappers
 func wrapGetItemsError(err error) error {
-	return errors.Wrap(err, fmt.Sprintf(utils.ErrorInHandlerFormat, GetItemsName))
+	return errors.Wrap(err, fmt.Sprintf(utils.ErrorInHandlerFormat, getItemsName))
 }
 
 func wrapBuyItemError(err error) error {
-	return errors.Wrap(err, fmt.Sprintf(utils.ErrorInHandlerFormat, BuyItemName))
+	return errors.Wrap(err, fmt.Sprintf(utils.ErrorInHandlerFormat, buyItemName))
 }
 
 // Other wrappers
