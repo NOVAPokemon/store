@@ -4,10 +4,12 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/NOVAPokemon/utils"
 	"github.com/NOVAPokemon/utils/api"
 	"github.com/NOVAPokemon/utils/clients"
+	"github.com/NOVAPokemon/utils/comms_manager"
 	"github.com/NOVAPokemon/utils/items"
 	"github.com/NOVAPokemon/utils/tokens"
 	"github.com/gorilla/mux"
@@ -21,9 +23,19 @@ var (
 	marshaledItems []byte
 
 	httpClient = &http.Client{}
+
+	serverName          string
+	commsManager        comms_manager.CommunicationManager
 )
 
 func init() {
+	if aux, exists := os.LookupEnv(utils.HostnameEnvVar); exists {
+		serverName = aux
+	} else {
+		log.Fatal("could not load server name")
+	}
+	log.Info("Server name : ", serverName)
+
 	var err error
 	itemsMap, marshaledItems, err = loadShopItems()
 	if err != nil {
@@ -77,7 +89,7 @@ func handleBuyItem(w http.ResponseWriter, r *http.Request) {
 	item := toBuy.ToItem()
 	toAdd := []items.Item{item}
 
-	var trainersClient = clients.NewTrainersClient(httpClient)
+	var trainersClient = clients.NewTrainersClient(httpClient, commsManager)
 
 	_, err = trainersClient.AddItems(authToken.Username, toAdd, authTokenString)
 	if err != nil {
