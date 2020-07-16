@@ -24,8 +24,8 @@ var (
 
 	httpClient = &http.Client{}
 
-	serverName          string
-	commsManager        comms_manager.CommunicationManager
+	serverName   string
+	commsManager comms_manager.CommunicationManager
 )
 
 func init() {

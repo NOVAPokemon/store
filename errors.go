@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	errorLoadShopItem = "error loading shop items"
+	errorLoadShopItem       = "error loading shop items"
 	errorItemNotFoundFormat = "item %s not Found"
 )
 
