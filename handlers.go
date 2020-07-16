@@ -11,6 +11,7 @@ import (
 	"github.com/NOVAPokemon/utils/clients"
 	"github.com/NOVAPokemon/utils/items"
 	"github.com/NOVAPokemon/utils/tokens"
+	"github.com/NOVAPokemon/utils/websockets"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
 )
@@ -24,7 +25,7 @@ var (
 	httpClient = &http.Client{}
 
 	serverName   string
-	commsManager utils.CommunicationManager
+	commsManager websockets.CommunicationManager
 )
 
 func init() {
