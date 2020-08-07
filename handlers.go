@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"io/ioutil"
-	http "github.com/bruno-anjos/archimedesHTTPClient"
-	originalHttp "net/http"
 	"os"
+
+	http "github.com/bruno-anjos/archimedesHTTPClient"
 
 	"github.com/NOVAPokemon/utils"
 	"github.com/NOVAPokemon/utils/api"
@@ -45,7 +45,7 @@ func init() {
 
 }
 
-func handleGetItems(w originalHttp.ResponseWriter, r *originalHttp.Request) {
+func handleGetItems(w http.ResponseWriter, r *http.Request) {
 	_, err := tokens.ExtractAndVerifyAuthToken(r.Header)
 	if err != nil {
 		utils.LogAndSendHTTPError(&w, wrapGetItemsError(err), http.StatusBadRequest)
@@ -58,7 +58,7 @@ func handleGetItems(w originalHttp.ResponseWriter, r *originalHttp.Request) {
 	}
 }
 
-func handleBuyItem(w originalHttp.ResponseWriter, r *originalHttp.Request) {
+func handleBuyItem(w http.ResponseWriter, r *http.Request) {
 	itemName := mux.Vars(r)[api.ShopItemNameVar]
 
 	toBuy, ok := itemsMap[itemName]
