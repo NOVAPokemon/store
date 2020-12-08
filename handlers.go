@@ -35,7 +35,7 @@ func init() {
 	} else {
 		log.Fatal("could not load server name")
 	}
-	log.Info("Server name : ", serverName)
+	log.Info("Server name: ", serverName)
 
 	var err error
 	itemsMap, marshaledItems, err = loadShopItems()
