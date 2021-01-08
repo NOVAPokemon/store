@@ -15,6 +15,7 @@ import (
 	"github.com/NOVAPokemon/utils/websockets"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
+	originalHTTP "net/http"
 )
 
 const itemsFile = "store_items.json"
@@ -23,7 +24,7 @@ var (
 	itemsMap       map[string]items.StoreItem
 	marshaledItems []byte
 
-	httpClient = &http.Client{}
+	httpClient = &http.Client{Client: originalHTTP.Client{Timeout: clients.RequestTimeout}}
 
 	serverName   string
 	commsManager websockets.CommunicationManager
