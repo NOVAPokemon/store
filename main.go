@@ -1,7 +1,11 @@
 package main
 
 import (
+	"os"
+
 	"github.com/NOVAPokemon/utils"
+	"github.com/golang/geo/s2"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -17,11 +21,17 @@ func main() {
 		utils.SetLogFile(serverName)
 	}
 
+	location, exists := os.LookupEnv("LOCATION")
+	if !exists {
+		log.Fatal("no location in environment")
+	}
+
+	cellID := s2.CellIDFromToken(location)
+
 	if !*flags.DelayedComms {
 		commsManager = utils.CreateDefaultCommunicationManager()
 	} else {
-		locationTag := utils.GetLocationTag(utils.DefaultLocationTagsFilename, serverName)
-		commsManager = utils.CreateDefaultDelayedManager(locationTag, false)
+		commsManager = utils.CreateDefaultDelayedManager(false, &utils.OptionalConfigs{CellID: cellID})
 	}
 
 	utils.StartServer(serviceName, host, port, routes, commsManager)

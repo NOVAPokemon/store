@@ -23,6 +23,7 @@ var (
 	marshaledItems []byte
 
 	httpClient = &http.Client{Timeout: clients.RequestTimeout}
+	basicClient   = clients.NewBasicClient(false, "")
 
 	serverName   string
 	commsManager websockets.CommunicationManager
@@ -88,7 +89,7 @@ func handleBuyItem(w http.ResponseWriter, r *http.Request) {
 	item := toBuy.ToItem()
 	toAdd := []items.Item{item}
 
-	trainersClient := clients.NewTrainersClient(httpClient, commsManager)
+	trainersClient := clients.NewTrainersClient(httpClient, commsManager, basicClient)
 
 	_, err = trainersClient.AddItems(authToken.Username, toAdd, authTokenString)
 	if err != nil {
