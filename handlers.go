@@ -7,6 +7,8 @@ import (
 
 	http "github.com/bruno-anjos/archimedesHTTPClient"
 
+	originalHTTP "net/http"
+
 	"github.com/NOVAPokemon/utils"
 	"github.com/NOVAPokemon/utils/api"
 	"github.com/NOVAPokemon/utils/clients"
@@ -15,7 +17,6 @@ import (
 	"github.com/NOVAPokemon/utils/websockets"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
-	originalHTTP "net/http"
 )
 
 const itemsFile = "store_items.json"
@@ -24,7 +25,12 @@ var (
 	itemsMap       map[string]items.StoreItem
 	marshaledItems []byte
 
-	httpClient = &http.Client{Client: originalHTTP.Client{Timeout: clients.RequestTimeout}}
+	httpClient = &http.Client{
+		Client: originalHTTP.Client{
+			Timeout:   clients.RequestTimeout,
+			Transport: clients.NewTransport(),
+		},
+	}
 
 	serverName   string
 	commsManager websockets.CommunicationManager
@@ -43,7 +49,6 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }
 
 func handleGetItems(w http.ResponseWriter, r *http.Request) {
@@ -91,7 +96,7 @@ func handleBuyItem(w http.ResponseWriter, r *http.Request) {
 	item := toBuy.ToItem()
 	toAdd := []items.Item{item}
 
-	var trainersClient = clients.NewTrainersClient(httpClient, commsManager)
+	trainersClient := clients.NewTrainersClient(httpClient, commsManager)
 
 	_, err = trainersClient.AddItems(authToken.Username, toAdd, authTokenString)
 	if err != nil {
@@ -125,7 +130,7 @@ func loadShopItems() (map[string]items.StoreItem, []byte, error) {
 		return nil, nil, wrapLoadShopItemsError(err)
 	}
 
-	var itemsMapAux = make(map[string]items.StoreItem, len(itemsArr))
+	itemsMapAux := make(map[string]items.StoreItem, len(itemsArr))
 	for _, item := range itemsArr {
 		itemsMapAux[item.Name] = item
 	}
