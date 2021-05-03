@@ -22,7 +22,12 @@ var (
 	itemsMap       map[string]items.StoreItem
 	marshaledItems []byte
 
-	httpClient = &http.Client{Timeout: clients.RequestTimeout}
+	httpClient = &http.Client{
+		Client: originalHTTP.Client{
+			Timeout:   clients.RequestTimeout,
+			Transport: clients.NewTransport(),
+		},
+	}
 	basicClient   = clients.NewBasicClient(false, "")
 
 	serverName   string
